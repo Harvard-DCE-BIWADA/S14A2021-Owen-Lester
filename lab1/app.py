@@ -11,9 +11,9 @@ def index():
 
 @app.route('/world')
 def hello_world():
-    return 'Hello, World!'
+    return render_template('layout.html', text = 'Hello, World!')
 
 
 @app.route('/<you>')
 def hello_you(you):
-    return f'Hello, {you}!'
+    return render_template('layout.html', text = 'Hello, ' +you + '!')
