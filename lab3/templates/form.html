@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block styles %}
+<link href="{{ url_for('static', filename='./css/form.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+<h1>Housing price prediction form</h1>
+
+<form class="form" method="POST" action="/predict">
+    {{ form.hidden_tag() }}
+
+    {% for field in form %}
+        {% if field.id != 'submit' and field.id != 'csrf_token' %}
+            <div class="form-group">
+                {{ field.label }}:
+                {{ field }}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <p class="form-error-message">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <div class="form-submit">
+        {{ form.submit }}
+    </div>
+</form>
+
+{% endblock %}

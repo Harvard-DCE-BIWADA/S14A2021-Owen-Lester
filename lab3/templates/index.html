@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block styles %}
+    <link href="{{ url_for('static', filename='./css/index.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+<h1>Prediction (linear regression): {{ prediction }}</h1>
+{% endblock %}
