@@ -8,7 +8,9 @@ app = Flask(__name__)
 app.secret_key = 'super_duper_secret' # where else can we put this??
 
 #Load ML model
-model = joblib.load('./notebooks/regr.pkl')
+model = joblib.load('/app/lab3/regr.pkl')
+#model = joblib.load('regr.pkl')
+
 @app.route('/')
 def index():
     # Make prediction - features = ['BEDS', 'BATHS', 'SQFT', 'AGE', 'LOTSIZE', 'GARAGE']
@@ -23,6 +25,7 @@ def form():
     form = Form()
 
     return render_template('form.html', form=form)
+
 
 @app.route('/predict', methods=['post'])
 def predict():
