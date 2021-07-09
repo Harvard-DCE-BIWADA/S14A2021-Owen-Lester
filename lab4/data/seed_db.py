@@ -4,7 +4,7 @@ import psycopg2
 import pandas as pd
 
 # Update with your user name
-conn = psycopg2.connect("host=localhost dbname=homework_users_db user=s14astudent")
+conn = psycopg2.connect("host=localhost dbname=homework_users_db user=postgres password=TheOwenL11")
 cur = conn.cursor()
 
 cur.execute('DROP TABLE IF EXISTS homework_users;')
@@ -21,7 +21,9 @@ cur.execute('''CREATE TABLE homework_users (
 
 conn.commit()
 
-df_users = pd.read_csv('./data/predefined_users.csv', index_col=0)
+#df_users = pd.read_csv('./data/predefined_users.csv', index_col=0)
+df_users = pd.read_csv('predefined_users.csv', index_col=0)
+
 for idx, u in df_users.iterrows():
     # Data cleaning
 
