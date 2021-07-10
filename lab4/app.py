@@ -3,7 +3,7 @@ from os import environ
 from flask import Flask, render_template, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from models.homeworkuser import HomeworkUser, Db
-
+import gunicorn
 # Load environment
 load_dotenv('.env')
 
@@ -13,7 +13,7 @@ app.secret_key = environ.get('SECRET_KEY')
 
 # Initialize DB
 Db = SQLAlchemy()
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:TheOwenL11@localhost:5432/homework_users_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
 
