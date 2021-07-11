@@ -13,7 +13,7 @@ app.secret_key = environ.get('SECRET_KEY')
 
 # Initialize DB
 Db = SQLAlchemy()
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DATABASE_URL").replace("postgres://", "postgresql://")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
 
