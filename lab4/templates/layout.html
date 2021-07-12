@@ -6,6 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Labs 4</title>
 
+    <link href="{{ url_for('static', filename='./css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='./css/reset.css') }}" rel="stylesheet">
+
+
     <!-- Styles -->
 
 
@@ -15,7 +19,25 @@
 </head>
 <body>
 
-    
+    <header>
+          <!-- Fixed navbar -->
+          <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" href="/">S14A2021 Labs 4: PostgreSQL Database</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+              <div class="collapse navbar-collapse" id="navbarCollapse">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="list">List</a>
+                </li>
+                  <li class="nav-item">
+                  <a class="nav-link" href="load_data">Load Data</a>
+                </li>
+              </ul>
+              </div>
+          </nav>
+        </header>
     <!-- Content -->
     {% block content %}
     {% endblock %}
@@ -23,6 +45,17 @@
 
     <!-- Scripts -->
     {% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='./js/bootstrap.js') }}" ></script>
+
     {% endblock %}
+
+<footer class="footer">
+      <div class="container">
+        <span class="text-muted">Owen Lester Lab 4</span>
+      </div>
+    </footer>
+
 </body>
 </html>

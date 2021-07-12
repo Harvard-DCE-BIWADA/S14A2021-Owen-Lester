@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block styles %}
+<link href="{{ url_for('static', filename='./css/list.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#1">1</a></li>
+    <li class="page-item"><a class="page-link" href="#2">2</a></li>
+    <li class="page-item"><a class="page-link" href="#3">3</a></li>
+    <li class="page-item"><a class="page-link" href="#4">4</a></li>
+  </ul>
+</nav>
+
+
+{% for page in user_info%}
+
+<table border = 1 id = {{loop.index}}>
+    <tr >
+    {%for item in head%}
+        <th>{{item}}</th>
+        {% endfor %}
+    </tr>
+
+    {% for user in page %}
+    <tr>
+        {% for field in user%}
+        <td>{{field}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+{% endfor %}
+{% endblock %}

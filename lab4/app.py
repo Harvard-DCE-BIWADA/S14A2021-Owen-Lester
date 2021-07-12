@@ -33,3 +33,17 @@ def load_data():
         del user_info['_sa_instance_state']
         users_json['users'].append(user_info)
     return jsonify(users_json)
+@app.route('/list')
+def list():
+    users = HomeworkUser.query.all()
+    all = []
+    pages = []
+    for num,user in enumerate(users):
+        user_info = user.__dict__
+        del user_info['_sa_instance_state']
+        pages.append(user_info.values())
+        if (num+1)%25 == 0:
+            all.append(pages)
+            pages = []
+    head = user.__dict__.keys()
+    return render_template("list.html", user_info=all, head = head)
