@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath lab5 app:app
+web: gunicorn --pythonpath lab6 app:app
