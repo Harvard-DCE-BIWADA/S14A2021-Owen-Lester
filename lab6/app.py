@@ -9,7 +9,7 @@ import gunicorn
 load_dotenv('.env')
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DATABASE_URL')#.replace('postgres://', 'postgresql://') # this is to solve a bug in heroku
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DATABASE_URL').replace('postgres://', 'postgresql://') # this is to solve a bug in heroku
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = environ.get('SECRET_KEY') # Make sure this is set in Heroku dashboard for this new app!
 Db.init_app(app)
