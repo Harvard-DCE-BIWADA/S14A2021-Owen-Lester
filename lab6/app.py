@@ -14,6 +14,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = environ.get('SECRET_KEY') # Make sure this is set in Heroku dashboard for this new app!
 Db.init_app(app)
 app.jinja_env.filters['zip'] = zip
+
 # User CRUD
 # Create a new user /user/create
 @app.route( '/user/create', methods=['POST'])
@@ -39,8 +40,48 @@ def user_create():
 # HW: Complete CRUD methods for User class
 #       NOTE: Each of the following routes should redirect the user to the login page if the user is not logged in!
 # HW: Add /user/retrieve/<uid>
+@app.route('/user/retrieve/<uid>')
+def retrieve_user(uid):
+    if 'username' in session and session['username'] != '' and int(uid) == User.query.filter_by(username=session['username']).first().uid:
+        user = User.query.filter_by(uid=uid).first()
+        print("HEEEELLLOO")
+        return render_template('user_profile.html', user = user)
+    else:
+        return redirect(f'/login')
+
+
+
+
 # HW: Add /user/update
+@app.route('/user/update/<username>/<password>')
+def update_user(username, password):
+    if 'username' in session and session['username'] != '':
+        user = User.query.filter_by(username = session['username']).first()
+        user.username = username
+        session['username'] = username
+        user.password = sha256_crypt.hash(password)
+        Db.session.commit()
+
+    return redirect(f'/login')
 # HW: Add /user/delete
+
+@app.route('/user/delete')
+def delete_user():
+
+    if 'username' in session and session['username'] != '':
+        user = User.query.filter_by(username=session['username']).first()
+        if  user != None:
+            uid = user.uid
+            posts = Post.query.filter_by(author = uid).all()
+            Db.session.delete(user)
+            for post in posts:
+                Db.session.delete(post)
+            Db.session.commit()
+            session.clear()
+    return redirect('/login')
+
+
+
 
 # Post CRUD
 # /post/create
@@ -63,6 +104,11 @@ def newpost():
 # HW: Complete CRUD methods for Post class
 #       NOTE: Each of the following routes should redirect the user to the login page if the user is not logged in!      
 # HW: Add /post/retrieve/<pid>
+@app.route('/user/retrieve/<pid>')
+def retrieve_post(pid):
+    post = Post.query.filter_by(pid=pid).first()
+    return render_template('user_profile.html', user = user)
+
 # HW: Add /post/update
 # HW: Add /post/delete
 

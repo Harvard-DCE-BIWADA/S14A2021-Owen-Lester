@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% if session_username is defined %}
+{% set status = "in" %}
+{% else %}
+{% set status = "out" %}
+{% endif %}
+
+
+{% block styles %}
+    <!-- <link href="{{ url_for('static', filename='./css/index.css') }}" rel="stylesheet"> -->
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+
+<br>
+<br>
+<br>
+<br>
+<p>
+    UID: {{user.uid}}
+</p>
+<br>
+<p>
+    Username: {{user.username}}
+</p>
+<br>
+<p>
+    Password: {{user.password}}
+</p>
+
+{% endblock %}
