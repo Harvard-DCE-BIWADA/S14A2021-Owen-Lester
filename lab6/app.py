@@ -45,23 +45,30 @@ def retrieve_user(uid):
     if 'username' in session and session['username'] != '' and int(uid) == User.query.filter_by(username=session['username']).first().uid:
         user = User.query.filter_by(uid=uid).first()
         print("HEEEELLLOO")
-        return render_template('user_profile.html', user = user)
+        return render_template('profile.html', user = user, purpose = "post")
     else:
+        session.clear()
         return redirect(f'/login')
 
 
 
 
 # HW: Add /user/update
-@app.route('/user/update/<username>/<password>')
-def update_user(username, password):
+@app.route('/update')
+def user_update():
     if 'username' in session and session['username'] != '':
-        user = User.query.filter_by(username = session['username']).first()
-        user.username = username
-        session['username'] = username
-        user.password = sha256_crypt.hash(password)
-        Db.session.commit()
+        return render_template("user_update.html", user = User.query.filter_by(username = session["username"]).first())
+    else:
+        return redirect(f'/login')
 
+@app.route('/user/update',  methods = ['post'])
+def update_user():
+    user = User.query.filter_by(username = session['username']).first()
+    user.username = request.form["username"]
+    session['username'] = request.form["username"]
+    user.password = sha256_crypt.hash(request.form["password"])
+    Db.session.commit()
+    session.clear()
     return redirect(f'/login')
 # HW: Add /user/delete
 
@@ -107,10 +114,45 @@ def newpost():
 @app.route('/user/retrieve/<pid>')
 def retrieve_post(pid):
     post = Post.query.filter_by(pid=pid).first()
-    return render_template('user_profile.html', user = user)
+    if 'username' in session and session['username'] != '' and post.author == User.query.filter_by(username= session["username"]).first().uid:
+        return render_template('profile.html',  purpose = "post", post = post)
+    else:
+        session.clear()
+        return redirect('/login')
+
 
 # HW: Add /post/update
+@app.route('/update_post')
+def post_update():
+    session_user = User.query.filter_by(username=session['username']).first()
+    posts = Post.query.filter_by(author=session_user.uid).all()
+    return render_template('post_update.html', posts = posts)
+
+@app.route('/post/update',  methods = ['post'])
+def update_post():
+    user = User.query.filter_by(username = session['username']).first()
+    posts = Post.query.filter_by(author = user.uid).all()
+    for post in posts:
+        if request.form[f'content{post.pid}'] == '':
+            pass
+        else:
+            post.content = request.form[f'content{post.pid}']
+    Db.session.commit()
+    return redirect(f'/index')
+
+
 # HW: Add /post/delete
+
+@app.route('/post/delete/<pid>')
+def delete_post(pid):
+    if 'username' in session and session['username'] != '':
+        user = User.query.filter_by(username=session['username']).first()
+        if  user != None:
+            post = Post.query.filter_by(pid = pid).first()
+            if post != None and post.author == user.uid:
+                Db.session.delete(post)
+                Db.session.commit()
+    return redirect('/index')
 
 # Default route
 @app.route('/')

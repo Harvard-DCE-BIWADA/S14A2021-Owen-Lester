@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% set status = "in" %}
+
+{% block styles %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+    <h1>Update Posts</h1>
+<p>
+    If you leave the space empty, the post will remain the same.
+</p>
+
+    <form method="POST" action="/post/update" novalidate>
+    {% for post in posts%}
+        <div class="form-group">
+        <label > {{post.pid}}: </label>
+
+            <input  class="form-control"  placeholder="{{post.content}}" name="content{{post.pid}}">
+
+        </div>
+        <br>
+        {% endfor %}
+
+
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+
+{% endblock %}

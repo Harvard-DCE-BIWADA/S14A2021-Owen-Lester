@@ -14,11 +14,12 @@
 {% endblock %}
 
 {% block content %}
+<br>
+<br>
+<br>
+<br>
+{%if purpose == "user"%}
 
-<br>
-<br>
-<br>
-<br>
 <p>
     UID: {{user.uid}}
 </p>
@@ -30,5 +31,20 @@
 <p>
     Password: {{user.password}}
 </p>
+{% else %}
+
+<p>
+    UID: {{post.pid}}
+</p>
+<br>
+<p>
+    Author: {{post.author}}
+</p>
+<br>
+<p>
+    Content: {{post.content}}
+</p>
+
+
 
 {% endblock %}
