@@ -26,5 +26,5 @@ class Follows(Db.Model):
 
 class Likes(Db.Model):
     __tablename__ = "likes"
-    uid = Db.Column(Db.Integer, Db.ForeignKey('users.uid'), nullable=False)
-    pid = Db.Column(Db.Integer, Db.ForeignKey('posts.pid'), nullable=False)
+    uid = Db.Column(Db.Integer, Db.ForeignKey('users.uid'), nullable=False, primary_key = True)
+    pid = Db.Column(Db.Integer, Db.ForeignKey('posts.pid'), nullable=False, primary_key = True)
