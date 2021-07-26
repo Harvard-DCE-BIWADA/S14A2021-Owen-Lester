@@ -181,7 +181,6 @@ def index():
 def login():
 
     # Init form
-    session.clear()
     form = LoginForm()
 
     # If post
@@ -209,7 +208,7 @@ def login():
 
 
 #POST /logout
-@app.route('/logout', methods=['POST'])
+@app.route('/logout', methods=['POST', "GET"])
 def logout():
     # Logout
     session.clear()
