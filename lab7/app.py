@@ -181,6 +181,7 @@ def index():
 def login():
 
     # Init form
+    session.clear()
     form = LoginForm()
 
     # If post
