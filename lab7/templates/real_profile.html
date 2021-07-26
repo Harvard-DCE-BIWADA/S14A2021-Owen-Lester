@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% set status = "in" %}
+
+
+{% block styles %}
+    <!-- <link href="{{ url_for('static', filename='./css/index.css') }}" rel="stylesheet"> -->
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+<h5> <a href = "{{url_for('index')}}"> Home </a> </h5>
+{% for p in posts %}
+<p> Author @{{p.author.username}}: {{p.content}} </p>
+{% endfor %}
+
+<h1>Profile: {{ user.username }} !</h1>
+
+{% if followed %}
+<form id="following_form" action="/profile/{{ user.username }}/unfollow" method="post">
+    <button>Unfollow</button>
+</form>
+{% else %}
+<form id="following_form" action="/profile/{{ user.username }}/follow" method="post">
+    <button>Follow</button>
+</form>
+{% endif %}
+
+
+{% endblock %}
