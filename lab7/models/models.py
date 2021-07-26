@@ -17,6 +17,7 @@ class Post(Db.Model):
     uid = Db.Column(Db.Integer, Db.ForeignKey('users.uid'), nullable=False)
     content = Db.Column(Db.String(1024), nullable=False)
     author = Db.relationship("User", backref ='post')
+    likes = Db.relationship("Likes", backref = 'post')
 
 class Follows(Db.Model):
     __tablename__ = 'follows'

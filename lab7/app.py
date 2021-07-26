@@ -44,7 +44,6 @@ def user_create():
 def retrieve_user(uid):
     if 'username' in session and session['username'] != '' and int(uid) == User.query.filter_by(username=session['username']).first().uid:
         user = User.query.filter_by(uid=uid).first()
-        print("HEEEELLLOO")
         return render_template('profile.html', user = user, purpose = "post")
     else:
         session.clear()
@@ -243,6 +242,8 @@ def profile(username):
 
         # Retrieve profile user
         profile_user = User.query.filter_by(username=username).first()
+        print(session_user)
+        print(username)
 
         # Retrieve posts
         profile_user_posts = Post.query.filter_by(uid=profile_user.uid).all()
@@ -255,7 +256,7 @@ def profile(username):
 
 
 
-        return render_template('real_profile.html', user=profile_user, posts=profile_user_posts, followed=followed)
+        return render_template('real_profile.html', user=profile_user, posts=profile_user_posts, followed=followed, session_user = session_user)
 
     else:
 
@@ -283,7 +284,7 @@ def follow(username):
         Db.session.add(follower)
         Db.session.commit()
 
-    return redirect(url_for('profile', username=username))
+    return redirect(url_for('profile', username=username, session_user = session_user))
 
 
 # GET /profile/<username>/unfollow
@@ -304,7 +305,7 @@ def unfollow(username):
         Db.session.delete(follower)
         Db.session.commit()
 
-    return redirect(url_for('profile', username=username))
+    return redirect(url_for('profile', username=username, session_user = session_user))
 
 @app.route('/like/<pid>', methods = ["POST"])
 def like(pid):
@@ -312,6 +313,19 @@ def like(pid):
         session_user = User.query.filter_by(username=session["username"]).first()
         if Likes.query.filter_by(uid=session_user.uid, pid = pid).first() is None:
             if Post.query.filter_by(pid = pid).first().author.uid != session_user.uid:
-                lik = Likes(uid = session_user, pid = pid)
+                lik = Likes(uid = session_user.uid, pid = pid)
                 Db.session.add(lik)
                 Db.session.commit()
+    username = Post.query.filter_by(pid = pid).first().author.username
+    return redirect(url_for('profile', username=username, session_user = session_user))
+
+@app.route('/unlike/<pid>', methods = ["POST"])
+def unlike(pid):
+    if 'username' in session:
+        session_user = User.query.filter_by(username=session["username"]).first()
+        if Likes.query.filter_by(uid=session_user.uid, pid = pid).first() is not None:
+            lik = Likes.query.filter_by(uid=session_user.uid, pid = pid).first()
+            Db.session.delete(lik)
+            Db.session.commit()
+    username = Post.query.filter_by(pid=pid).first().author.username
+    return redirect(url_for('profile', username=username, session_user = session_user))

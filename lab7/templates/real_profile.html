@@ -14,12 +14,37 @@
 <br>
 <br>
 <br>
+<h1>Profile: {{ user.username }} !</h1>
 <h5> <a href = "{{url_for('index')}}"> Home </a> </h5>
 {% for p in posts %}
-<p> Author @{{p.author.username}}: {{p.content}} </p>
+
+
+
+<p style = "display:inline;"> Author @{{p.author.username}}: {{p.content}} </p>
+
+{% set ns = namespace(liked=false) %}
+{% for a in p.likes %}
+{% if a.uid == session_user.uid %}
+{% set ns.liked = True %}
+{% endif %}
 {% endfor %}
 
-<h1>Profile: {{ user.username }} !</h1>
+{% if ns.liked == False %}
+<form id="like_form" action="/like/{{p.pid}}" method="post"  style = "display:inline;">
+    <button>Like</button>
+</form>
+
+{%else%}
+<form id="unlike_form" action="/unlike/{{p.pid}}" method="post" style = "display:inline;">
+    <button>Unlike</button>
+</form>
+
+{%endif%}
+<span> {{p.likes|count}}</span>
+
+<br>
+{% endfor %}
+
 
 {% if followed %}
 <form id="following_form" action="/profile/{{ user.username }}/unfollow" method="post">
