@@ -315,4 +315,3 @@ def like(pid):
                 lik = Likes(uid = session_user, pid = pid)
                 Db.session.add(lik)
                 Db.session.commit()
-            
